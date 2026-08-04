@@ -13,22 +13,32 @@ namespace BIS.WRP
         private EditableWrp editable;
         private IWrp wrp;
 
+        /// <summary>Stores the land range x value.</summary>
         public int LandRangeX => wrp.LandRangeX;
 
+        /// <summary>Stores the land range y value.</summary>
         public int LandRangeY => wrp.LandRangeY;
 
+        /// <summary>Stores the terrain range x value.</summary>
         public int TerrainRangeX => wrp.TerrainRangeX;
 
+        /// <summary>Stores the terrain range y value.</summary>
         public int TerrainRangeY => wrp.TerrainRangeY;
 
+        /// <summary>Stores the cell size value.</summary>
         public float CellSize => wrp.CellSize;
 
+        /// <summary>Stores the elevation value.</summary>
         public float[] Elevation => wrp.Elevation;
 
+        /// <summary>Stores the mat names value.</summary>
         public string[] MatNames => wrp.MatNames;
 
+        /// <summary>Stores the material index value.</summary>
         public IReadOnlyList<ushort> MaterialIndex => wrp.MaterialIndex;
 
+        /// <summary>Performs the read operation.</summary>
+        /// <param name="input">The source stream or value.</param>
         public void Read(BinaryReaderEx input)
         {
             var signature = input.ReadAscii(4);
@@ -51,6 +61,8 @@ namespace BIS.WRP
             }
         }
 
+        /// <summary>Gets editable wrp.</summary>
+        /// <returns>The resulting value.</returns>
         public EditableWrp GetEditableWrp()
         {
             if (editable == null)

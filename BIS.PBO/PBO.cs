@@ -7,6 +7,7 @@ using BIS.Core.Streams;
 
 namespace BIS.PBO
 {
+    /// <summary>Represents pbo.</summary>
     public class PBO
     {
         private static FileEntry VersionEntry;
@@ -14,8 +15,10 @@ namespace BIS.PBO
 
         private FileStream pboFileStream;
 
+        /// <summary>Gets the pbo file path.</summary>
         public string PBOFilePath { get; private set; }
 
+        /// <summary>Gets the pbo file stream.</summary>
         public FileStream PBOFileStream
         {
             get
@@ -24,10 +27,15 @@ namespace BIS.PBO
                 return pboFileStream;
             }
         }
+        /// <summary>Gets or sets the file entries.</summary>
         public LinkedList<FileEntry> FileEntries { get; } = new LinkedList<FileEntry>();
+        /// <summary>Gets or sets the properties.</summary>
         public LinkedList<string> Properties { get; } = new LinkedList<string>();
+        /// <summary>Gets the data offset.</summary>
         public int DataOffset { get; private set; }
+        /// <summary>Gets the prefix.</summary>
         public string Prefix { get; private set; }
+        /// <summary>Stores the file name value.</summary>
         public string FileName => Path.GetFileName(PBOFilePath);
 
         static PBO()
@@ -41,6 +49,9 @@ namespace BIS.PBO
             EmptyEntry = new FileEntry();
         }
 
+        /// <summary>Initializes a new PBO instance.</summary>
+        /// <param name="fileName">The file path.</param>
+        /// <param name="keepStreamOpen">The keep stream open value.</param>
         public PBO(string fileName, bool keepStreamOpen = false)
         {
             PBOFilePath = fileName;
@@ -121,11 +132,18 @@ namespace BIS.PBO
             return bytes;
         }
 
+        /// <summary>Performs the extract file operation.</summary>
+        /// <param name="entry">The entry value.</param>
+        /// <param name="dst">The dst value.</param>
         public void ExtractFile(FileEntry entry, string dst)
         {
             ExtractFiles(Methods.Yield(entry), dst);
         }
 
+        /// <summary>Performs the extract files operation.</summary>
+        /// <param name="entries">The entries value.</param>
+        /// <param name="dst">The dst value.</param>
+        /// <param name="keepStreamOpen">The keep stream open value.</param>
         public void ExtractFiles(IEnumerable<FileEntry> entries, string dst, bool keepStreamOpen = false)
         {
             foreach (var entry in entries.OrderBy(e => e.StartOffset))
@@ -143,17 +161,26 @@ namespace BIS.PBO
             }
         }
 
+        /// <summary>Performs the extract all files operation.</summary>
+        /// <param name="directory">The directory value.</param>
         public void ExtractAllFiles(string directory)
         {
             var dstPath = Path.Combine(directory, Prefix);
             ExtractFiles(FileEntries, dstPath);
         }
 
+        /// <summary>Gets file entry stream.</summary>
+        /// <param name="entry">The entry value.</param>
+        /// <returns>The resulting value.</returns>
         public MemoryStream GetFileEntryStream(FileEntry entry)
         {
             return GetFileEntryStreams(Methods.Yield(entry)).First();
         }
 
+        /// <summary>Gets file entry streams.</summary>
+        /// <param name="entries">The entries value.</param>
+        /// <param name="keepStreamOpen">The keep stream open value.</param>
+        /// <returns>The resulting values.</returns>
         public IEnumerable<MemoryStream> GetFileEntryStreams(IEnumerable<FileEntry> entries, bool keepStreamOpen = false)
         {
             foreach (var entry in entries)
@@ -207,6 +234,9 @@ namespace BIS.PBO
             WriteBasicHeader(output);
         }
 
+        /// <summary>Gets all non empty file entries.</summary>
+        /// <param name="path">The path value.</param>
+        /// <returns>The resulting values.</returns>
         public static IEnumerable<KeyValuePair<FileEntry, PBO>> GetAllNonEmptyFileEntries(string path)
         {
             var allPBOs = Directory.GetFiles(path, "*.pbo", SearchOption.AllDirectories);

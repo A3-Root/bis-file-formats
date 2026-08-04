@@ -36,6 +36,7 @@ namespace BIS.P3D
     //    }
     //}
    
+    /// <summary>Represents p3 d.</summary>
     public static class P3D
     {
         //public int Version { get; protected set; }
@@ -58,11 +59,17 @@ namespace BIS.P3D
         //        throw new FormatException("Neither MLOD nor ODOL signature detected");
         //}
 
+        /// <summary>Performs the is odol operation.</summary>
+        /// <param name="filePath">The file path value.</param>
+        /// <returns>The resulting value.</returns>
         public static bool IsODOL(string filePath)
         {
             return IsODOL(File.OpenRead(filePath));
         }
 
+        /// <summary>Performs the is odol operation.</summary>
+        /// <param name="stream">The source stream or value.</param>
+        /// <returns>The resulting value.</returns>
         public static bool IsODOL(Stream stream)
         {
             bool result = false;
@@ -76,11 +83,17 @@ namespace BIS.P3D
 
             return result;
         }
+        /// <summary>Performs the is mlod operation.</summary>
+        /// <param name="filePath">The file path value.</param>
+        /// <returns>The resulting value.</returns>
         public static bool IsMLOD(string filePath)
         {
             return IsMLOD(File.OpenRead(filePath));
         }
 
+        /// <summary>Performs the is mlod operation.</summary>
+        /// <param name="stream">The source stream or value.</param>
+        /// <returns>The resulting value.</returns>
         public static bool IsMLOD(Stream stream)
         {
             bool result = false;

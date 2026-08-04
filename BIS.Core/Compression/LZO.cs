@@ -3,10 +3,16 @@ using System.Diagnostics;
 
 namespace BIS.Core.Compression
 {
+    /// <summary>Represents lzo.</summary>
     public static class LZO
     {
         private static readonly uint M2_MAX_OFFSET = 0x0800;
 
+        /// <summary>Performs the decompress operation.</summary>
+        /// <param name="input">The source stream or value.</param>
+        /// <param name="output">The destination stream or writer.</param>
+        /// <param name="expectedSize">The expected decoded size.</param>
+        /// <returns>The resulting value.</returns>
         public unsafe static uint Decompress(byte* input, byte* output, uint expectedSize)
         {
             byte* op;
@@ -228,6 +234,11 @@ namespace BIS.Core.Compression
             return (byte)i.ReadByte();
         }
 
+        /// <summary>Performs the decompress operation.</summary>
+        /// <param name="i">The i value.</param>
+        /// <param name="output">The destination stream or writer.</param>
+        /// <param name="expectedSize">The expected decoded size.</param>
+        /// <returns>The resulting value.</returns>
         public unsafe static uint Decompress(System.IO.Stream i, byte* output, uint expectedSize)
         {
             long startPos = i.Position;
@@ -411,6 +422,11 @@ namespace BIS.Core.Compression
         }
 
 
+        /// <summary>Reads lzo from the underlying data.</summary>
+        /// <param name="input">The source stream or value.</param>
+        /// <param name="dst">The dst value.</param>
+        /// <param name="expectedSize">The expected decoded size.</param>
+        /// <returns>The resulting value.</returns>
         public unsafe static uint ReadLZO(System.IO.Stream input, out byte[] dst, uint expectedSize)
         {
             dst = new byte[expectedSize];
@@ -420,6 +436,10 @@ namespace BIS.Core.Compression
             }
         }
 
+        /// <summary>Reads lzo from the underlying data.</summary>
+        /// <param name="input">The source stream or value.</param>
+        /// <param name="expectedSize">The expected decoded size.</param>
+        /// <returns>The resulting values.</returns>
         public unsafe static byte[] ReadLZO(System.IO.Stream input, uint expectedSize)
         {
             var dst = new byte[expectedSize];

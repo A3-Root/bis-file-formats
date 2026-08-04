@@ -2,8 +2,15 @@
 
 namespace BIS.Core.Compression
 {
+    /// <summary>Represents lzss.</summary>
     public static class LZSS
     {
+        /// <summary>Reads lzss from the underlying data.</summary>
+        /// <param name="input">The source stream or value.</param>
+        /// <param name="dst">The dst value.</param>
+        /// <param name="expectedSize">The expected decoded size.</param>
+        /// <param name="useSignedChecksum">The use signed checksum value.</param>
+        /// <returns>The resulting value.</returns>
         public static uint ReadLZSS(System.IO.Stream input, out byte[] dst, uint expectedSize, bool useSignedChecksum)
         {
             const int N = 4096;

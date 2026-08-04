@@ -1,0 +1,6 @@
+Added lazy LZO and LZSS streams in LzoDecompressionStream.cs LzssDecompressionStream.cs
+Added compatible stream-returning reader APIs and direct typed-array deserialization in BinaryReaderEx.cs
+Restored compression thresholds and corrected explicit LZO flag writing
+Documented all public/protected library APIs, including parameters, type parameters, and returns. XML generation and CS1591 enforcement are enabled across all eight libraries
+Preserved the PAA height fix and added rectangular mipmap coverage in PaaEncoderTest.cs
+Retargeted tests to .NET 8 and added the PAA encoder to the solution

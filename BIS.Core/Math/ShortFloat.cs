@@ -1,5 +1,6 @@
 ﻿namespace BIS.Core.Math
 {
+    /// <summary>Represents short float.</summary>
     public struct ShortFloat
     {
         private const int MANTISSA_SIZE = 10;
@@ -10,17 +11,23 @@
 
         private ushort value;
 
+        /// <summary>Initializes a new ShortFloat instance.</summary>
+        /// <param name="v">The v value.</param>
         public ShortFloat(ushort v)
         {
             value = v;
         }
 
+        /// <summary>Performs the implicit operator float operation.</summary>
+        /// <param name="d">The d value.</param>
+        /// <returns>The resulting value.</returns>
         public static implicit operator float(ShortFloat d)
         {
             return (float)d.DoubleValue;
         }
 
 
+        /// <summary>Gets the double value.</summary>
         public double DoubleValue
         {
             get

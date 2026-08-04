@@ -65,6 +65,7 @@ namespace MiniLZO
 {
 	using System;
 
+	/// <summary>Represents mini lzo.</summary>
 	public static class MiniLZO
 	{
 
@@ -281,6 +282,13 @@ namespace MiniLZO
 			return 0;
 		}
 
+		/// <summary>Performs the lzo1x decompress operation.</summary>
+		/// <param name="in">The compressed input buffer.</param>
+		/// <param name="in_len">The in len value.</param>
+		/// <param name="out">The output buffer.</param>
+		/// <param name="out_len">The out len value.</param>
+		/// <param name="wrkmem">The wrkmem value.</param>
+		/// <returns>The resulting value.</returns>
 		public unsafe static int lzo1x_decompress(byte* @in, uint in_len, byte* @out, ref uint out_len, void* wrkmem)
 		{
 			byte* op;
@@ -465,6 +473,10 @@ namespace MiniLZO
 
 
 
+		/// <summary>Performs the decompress operation.</summary>
+		/// <param name="in">The compressed input buffer.</param>
+		/// <param name="out">The output buffer.</param>
+		/// <returns>The resulting value.</returns>
 		public static unsafe uint Decompress(byte[] @in, byte[] @out)
 		{
 			uint out_len = 0;
@@ -475,6 +487,11 @@ namespace MiniLZO
 			return out_len;
 		}
 
+		/// <summary>Performs the decompress operation.</summary>
+		/// <param name="r">The r value.</param>
+		/// <param name="size_in">The size in value.</param>
+		/// <param name="w">The w value.</param>
+		/// <param name="size_out">The size out value.</param>
 		public static unsafe void Decompress(byte* r, uint size_in, byte* w, ref uint size_out)
 		{
 			fixed (byte* wrkmem = new byte[IntPtr.Size * 16384])
@@ -483,6 +500,9 @@ namespace MiniLZO
 			}
 		}
 
+		/// <summary>Performs the compress operation.</summary>
+		/// <param name="input">The source stream or value.</param>
+		/// <returns>The resulting values.</returns>
 		public static unsafe byte[] Compress(byte[] input)
 		{
 			byte[] @out = new byte[input.Length + (input.Length / 16) + 64 + 3];
@@ -495,6 +515,11 @@ namespace MiniLZO
 			return @out;
 		}
 
+		/// <summary>Performs the compress operation.</summary>
+		/// <param name="r">The r value.</param>
+		/// <param name="size_in">The size in value.</param>
+		/// <param name="w">The w value.</param>
+		/// <param name="size_out">The size out value.</param>
 		public static unsafe void Compress(byte* r, uint size_in, byte* w, ref uint size_out)
 		{
 			fixed (byte* wrkmem = new byte[IntPtr.Size * 16384])

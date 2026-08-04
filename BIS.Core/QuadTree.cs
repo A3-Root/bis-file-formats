@@ -7,6 +7,8 @@ using System.Runtime.InteropServices;
 
 namespace BIS.Core
 {
+    /// <summary>Represents a two-dimensional quadtree of elements.</summary>
+    /// <typeparam name="TElement">The stored element type.</typeparam>
     public class QuadTree<TElement> : IEnumerable<TElement>, IReadOnlyList<TElement>
     {           
         /// <summary>
@@ -52,13 +54,25 @@ namespace BIS.Core
         private static Func<byte[], int, TElement> readElement;
         private static int elementSize;
 
+        /// <summary>Stores the size x value.</summary>
         public int SizeX => sizeX;
+        /// <summary>Gets the size y.</summary>
         public int SizeY => sizeY;
 
+        /// <summary>Gets the count.</summary>
         public int Count => sizeX * sizeY;
 
+        /// <summary>Gets the this[int].</summary>
+        /// <param name="index">The index value.</param>
+        /// <returns>The resulting value.</returns>
         public TElement this[int index] => Get(index % SizeX, index / sizeX);
 
+        /// <summary>Initializes a new QuadTree instance.</summary>
+        /// <param name="sizeX">The size x value.</param>
+        /// <param name="sizeY">The size y value.</param>
+        /// <param name="input">The source stream or value.</param>
+        /// <param name="readElement">The function that reads one element.</param>
+        /// <param name="elementSize">The element size value.</param>
         public QuadTree(int sizeX, int sizeY, BinaryReader input, Func<byte[], int, TElement> readElement, int elementSize)
         {
             QuadTree<TElement>.readElement = readElement;
@@ -81,6 +95,10 @@ namespace BIS.Core
             }
         }
 
+        /// <summary>Performs the get operation.</summary>
+        /// <param name="x">The x value.</param>
+        /// <param name="y">The y value.</param>
+        /// <returns>The resulting value.</returns>
         public TElement Get(int x, int y)
         {
             if (x < 0 || x >= sizeX) 
@@ -151,6 +169,8 @@ namespace BIS.Core
             Debug.Assert(sizeTotalY >= sizeY);
         }
 
+        /// <summary>Gets enumerator.</summary>
+        /// <returns>The resulting value.</returns>
         public IEnumerator<TElement> GetEnumerator()
         {
             return allElementsEnumeration.GetEnumerator();

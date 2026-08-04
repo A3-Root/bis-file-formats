@@ -4,23 +4,33 @@ using System.Diagnostics;
 
 namespace BIS.PAA
 {
+    /// <summary>Represents palette.</summary>
     public class Palette
     {
+        /// <summary>Gets or sets the pic flag alpha.</summary>
         public const int PicFlagAlpha = 1;
+        /// <summary>Gets or sets the pic flag transparent.</summary>
         public const int PicFlagTransparent = 2;
 
+        /// <summary>Gets the colors.</summary>
         public PackedColor[] Colors { get; private set; }
 
+        /// <summary>Gets the average color.</summary>
         public PackedColor AverageColor { get; private set; }
         //! color used to maximize dynamic range
+        /// <summary>Gets the max color.</summary>
         public PackedColor MaxColor { get; private set; }
 
         internal ARGBSwizzle ChannelSwizzle { get; private set; } = ARGBSwizzle.Default;
 
+        /// <summary>Gets the is alpha.</summary>
         public bool IsAlpha { get; private set; }
+        /// <summary>Gets the is transparent.</summary>
         public bool IsTransparent { get; private set; }
 
 
+        /// <summary>Initializes a new Palette instance.</summary>
+        /// <param name="format">The format value.</param>
         public Palette(PAAType format)
         {
             MaxColor = new PackedColor(0xffffffff);
@@ -37,6 +47,9 @@ namespace BIS.PAA
             }
         }
 
+        /// <summary>Performs the read operation.</summary>
+        /// <param name="input">The source stream or value.</param>
+        /// <param name="startOffsets">The start offsets value.</param>
         public void Read(BinaryReaderEx input, int[] startOffsets)
         {
             //read Taggs

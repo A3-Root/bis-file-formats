@@ -7,8 +7,14 @@ using Microsoft.Toolkit.HighPerformance;
 
 namespace BIS.PAA.Encoder
 {
+    /// <summary>Encodes color images as BI PAA textures with generated mipmaps.</summary>
     public static class PaaEncoder
     {
+        /// <summary>Encodes an image and writes it to a PAA file.</summary>
+        /// <param name="file">The destination file path.</param>
+        /// <param name="image">The source pixels indexed by row and column.</param>
+        /// <param name="type">The PAA compression type, or <see cref="PAAType.UNDEFINED"/> to select it from the alpha channel.</param>
+        /// <param name="flags">The PAA encoding flags.</param>
         public static void WritePAA(string file, ColorRgba32[,] image, PAAType type = PAAType.UNDEFINED, PAAFlags flags = PAAFlags.InterpolatedAlpha)
         {
             using (var writer = new BinaryWriterEx(File.Create(file)))
@@ -17,6 +23,11 @@ namespace BIS.PAA.Encoder
             }
         }
 
+        /// <summary>Encodes an image and writes it to an existing binary writer.</summary>
+        /// <param name="writer">The destination writer.</param>
+        /// <param name="image">The source pixels indexed by row and column.</param>
+        /// <param name="type">The PAA compression type, or <see cref="PAAType.UNDEFINED"/> to select it from the alpha channel.</param>
+        /// <param name="flags">The PAA encoding flags.</param>
         public static void WritePAA(BinaryWriterEx writer, ColorRgba32[,] image, PAAType type = PAAType.UNDEFINED, PAAFlags flags = PAAFlags.InterpolatedAlpha)
         {
             var max = new ColorRgba32(0, 0, 0, 0);
@@ -63,6 +74,14 @@ namespace BIS.PAA.Encoder
             WritePAA(writer, new ReadOnlyMemory2D<ColorRgba32>(image), max, avg, type, flags);
         }
 
+        /// <summary>Encodes an image with precomputed color metadata and writes it to an existing binary writer.</summary>
+        /// <param name="writer">The destination writer.</param>
+        /// <param name="image">The source pixel memory.</param>
+        /// <param name="max">The maximum value of each color channel.</param>
+        /// <param name="avg">The average value of each color channel.</param>
+        /// <param name="type">The DXT compression type.</param>
+        /// <param name="flags">The PAA encoding flags.</param>
+        /// <exception cref="NotSupportedException"><paramref name="type"/> is not DXT1 or DXT5.</exception>
         public static void WritePAA(BinaryWriterEx writer, ReadOnlyMemory2D<ColorRgba32> image, ColorRgba32 max, ColorRgba32 avg, PAAType type = PAAType.DXT5, PAAFlags flags = PAAFlags.InterpolatedAlpha)
         {
             if (type != PAAType.DXT5 && type != PAAType.DXT1)

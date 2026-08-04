@@ -22,15 +22,24 @@ namespace BIS.WRP
     //    }
     //}
 
+    /// <summary>Represents road link.</summary>
     public class RoadLink
     {
+        /// <summary>Gets the connection count.</summary>
         public short ConnectionCount { get; }
+        /// <summary>Gets the positions.</summary>
         public Vector3P[] Positions { get; }
+        /// <summary>Gets the connection types.</summary>
         public byte[] ConnectionTypes { get; }
+        /// <summary>Gets the object id.</summary>
         public int ObjectID { get; }
+        /// <summary>Gets the p3d path.</summary>
         public string P3dPath { get; }
+        /// <summary>Gets the to world.</summary>
         public Matrix4P ToWorld { get; }
 
+        /// <summary>Initializes a new RoadLink instance.</summary>
+        /// <param name="input">The source stream or value.</param>
         public RoadLink(BinaryReaderEx input)
         {
             ConnectionCount = input.ReadInt16();

@@ -77,7 +77,7 @@ namespace BIS.Core.Serialization
         /// 
         /// https://community.bistudio.com/wiki/parseSimpleArray
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="list">The sequence to serialize.</param>
         /// <returns></returns>
         public static string ToSimpleArrayString(IEnumerable list)
         {

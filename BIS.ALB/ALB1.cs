@@ -7,24 +7,40 @@ using System.Threading.Tasks;
 
 namespace BIS.ALB
 {
+    /// <summary>Specifies alb datatype values.</summary>
     public enum ALB_Datatype: byte
     {
+        /// <summary>Specifies the character value.</summary>
         Character=1,
+        /// <summary>Specifies the integer value.</summary>
         Integer=5,
+        /// <summary>Specifies the integer2 value.</summary>
         Integer2=6,
+        /// <summary>Specifies the integer3 value.</summary>
         Integer3=7,
+        /// <summary>Specifies the integer4 value.</summary>
         Integer4=8,
+        /// <summary>Specifies the boolean value.</summary>
         Boolean=9,
+        /// <summary>Specifies the float value.</summary>
         Float=10,
+        /// <summary>Specifies the string value.</summary>
         String=11,
+        /// <summary>Specifies the list value.</summary>
         List=12,
+        /// <summary>Specifies the object value.</summary>
         Object=13,
+        /// <summary>Specifies the unknown value.</summary>
         Unknown=15,
+        /// <summary>Specifies the unknown2 value.</summary>
         Unknown2=19,
+        /// <summary>Specifies the double value.</summary>
         Double=20,
+        /// <summary>Specifies the double array value.</summary>
         DoubleArray=21
     }
 
+    /// <summary>Represents alb1.</summary>
     public class ALB1
     {
         private Dictionary<int, string> tags = new Dictionary<int, string>();
@@ -32,11 +48,17 @@ namespace BIS.ALB
 
         private LinkedList<ALB_Entry> entries = new LinkedList<ALB_Entry>();
 
+        /// <summary>Represents alb entry.</summary>
         public class ALB_Entry
         {
+            /// <summary>Gets the tag id.</summary>
             public int TagID { get; }
+            /// <summary>Gets the value.</summary>
             public ALB_Value Value { get; }
 
+            /// <summary>Initializes a new ALB_Entry instance.</summary>
+            /// <param name="input">The source stream or value.</param>
+            /// <param name="layerVersion">The layer version value.</param>
             public ALB_Entry(BinaryReaderEx input, int? layerVersion = null)
             {
                 TagID = input.ReadInt16();
@@ -46,8 +68,14 @@ namespace BIS.ALB
         }
 
         #region ValueTypes
+        /// <summary>Represents alb value.</summary>
         public abstract class ALB_Value
         {
+            /// <summary>Reads alb value from the underlying data.</summary>
+            /// <param name="dataType">The data type value.</param>
+            /// <param name="input">The source stream or value.</param>
+            /// <param name="layerVersion">The layer version value.</param>
+            /// <returns>The resulting value.</returns>
             public static ALB_Value ReadALBValue(ALB_Datatype dataType, BinaryReaderEx input, int? layerVersion = null)
             {
                 switch (dataType)
@@ -86,17 +114,30 @@ namespace BIS.ALB
                 }
             }
 
+            /// <summary>Converts this value to string.</summary>
+            /// <param name="alb">The alb value.</param>
+            /// <param name="indLvl">The ind lvl value.</param>
+            /// <returns>The resulting value.</returns>
             public abstract string ToString(ALB1 alb, int indLvl = 0);
         }
 
+        /// <summary>Represents a strongly typed ALB scalar value.</summary>
+        /// <typeparam name="T">The stored value type.</typeparam>
         public class ALB_SimpleValue<T> : ALB_Value
         {
+            /// <summary>Gets the value.</summary>
             public T Value { get; }
+            /// <summary>Initializes a new ALB_SimpleValue instance.</summary>
+            /// <param name="value">The value to process.</param>
             public ALB_SimpleValue(T value)
             {
                 this.Value = value;
             }
 
+            /// <summary>Converts this value to string.</summary>
+            /// <param name="alb">The alb value.</param>
+            /// <param name="indLvl">The ind lvl value.</param>
+            /// <returns>The resulting value.</returns>
             public override string ToString(ALB1 alb, int indLvl = 0)
             {
                 if (Value is string) return $"\"{Value}\"";
@@ -104,12 +145,17 @@ namespace BIS.ALB
             }
         }
 
+        /// <summary>Represents alb list.</summary>
         public class ALB_List : ALB_Value
         {
             int size;
             ALB_Entry[] entries;
+            /// <summary>Stores the tree root value.</summary>
             public ObjectTreeNode treeRoot;
 
+            /// <summary>Initializes a new ALB_List instance.</summary>
+            /// <param name="input">The source stream or value.</param>
+            /// <param name="layerVersion">The layer version value.</param>
             public ALB_List(BinaryReaderEx input, int? layerVersion = null)
             {
                 size = input.ReadInt32();
@@ -127,6 +173,10 @@ namespace BIS.ALB
                 }
             }
 
+            /// <summary>Converts this value to string.</summary>
+            /// <param name="alb">The alb value.</param>
+            /// <param name="indLvl">The ind lvl value.</param>
+            /// <returns>The resulting value.</returns>
             public override string ToString(ALB1 alb, int indLvl = 0)
             {
                 if (entries == null || entries.Length == 0) return "Empty List";
@@ -135,13 +185,17 @@ namespace BIS.ALB
             }
         }
 
+        /// <summary>Represents alb object.</summary>
         public class ALB_Object : ALB_Value
         {
             int size;
+            /// <summary>Stores the class id value.</summary>
             public int classID;
             int objectID;
             LinkedList<ALB_Entry> entries = new LinkedList<ALB_Entry>();
 
+            /// <summary>Initializes a new ALB_Object instance.</summary>
+            /// <param name="input">The source stream or value.</param>
             public ALB_Object(BinaryReaderEx input)
             {
                 size = input.ReadInt32();
@@ -156,6 +210,10 @@ namespace BIS.ALB
                     bytesRead += (int)(input.Position - pos);
                 }
             }
+            /// <summary>Converts this value to string.</summary>
+            /// <param name="alb">The alb value.</param>
+            /// <param name="indLvl">The ind lvl value.</param>
+            /// <returns>The resulting value.</returns>
             public override string ToString(ALB1 alb, int indLvl = 0)
             {
                 return $"\r\n{alb.EntriesToString(entries, indLvl + 1)}";
@@ -163,48 +221,69 @@ namespace BIS.ALB
 
         }
 
+        /// <summary>Represents alb unknown.</summary>
         public class ALB_Unknown : ALB_Value
         {
             ALB_Entry entry1;
             ALB_Entry entry2;
 
+            /// <summary>Initializes a new ALB_Unknown instance.</summary>
+            /// <param name="input">The source stream or value.</param>
             public ALB_Unknown(BinaryReaderEx input)
             {
                 entry1 = new ALB_Entry(input);
                 entry2 = new ALB_Entry(input);
             }
 
+            /// <summary>Converts this value to string.</summary>
+            /// <param name="alb">The alb value.</param>
+            /// <param name="indLvl">The ind lvl value.</param>
+            /// <returns>The resulting value.</returns>
             public override string ToString(ALB1 alb, int indLvl = 0)
             {
                 return $"\r\n{alb.EntryToString(entry1, indLvl + 1)}\r\n{alb.EntryToString(entry2, indLvl + 1)}";
             }
         }
 
+        /// <summary>Represents alb unknown2.</summary>
         public class ALB_Unknown2 : ALB_Value
         {
             byte[] data;
 
+            /// <summary>Initializes a new ALB_Unknown2 instance.</summary>
+            /// <param name="input">The source stream or value.</param>
             public ALB_Unknown2(BinaryReaderEx input)
             {
                 data = input.ReadBytes(21);
             }
 
+            /// <summary>Converts this value to string.</summary>
+            /// <param name="alb">The alb value.</param>
+            /// <param name="indLvl">The ind lvl value.</param>
+            /// <returns>The resulting value.</returns>
             public override string ToString(ALB1 alb, int indLvl = 0)
             {
                 return string.Join(",", data);
             }
         }
 
+        /// <summary>Represents alb double array.</summary>
         public class ALB_DoubleArray : ALB_Value
         {
             double[] values;
 
+            /// <summary>Initializes a new ALB_DoubleArray instance.</summary>
+            /// <param name="input">The source stream or value.</param>
             public ALB_DoubleArray(BinaryReaderEx input)
             {
                 var n = input.ReadByte();
                 values = Enumerable.Range(0, n).Select(_ => input.ReadDouble()).ToArray();
             }
 
+            /// <summary>Converts this value to string.</summary>
+            /// <param name="alb">The alb value.</param>
+            /// <param name="indLvl">The ind lvl value.</param>
+            /// <returns>The resulting value.</returns>
             public override string ToString(ALB1 alb, int indLvl = 0)
             {
                 return string.Join(", ", values);
@@ -212,6 +291,8 @@ namespace BIS.ALB
         }
         #endregion
 
+        /// <summary>Initializes a new ALB1 instance.</summary>
+        /// <param name="input">The source stream or value.</param>
         public ALB1(BinaryReaderEx input)
         {
             var sig = input.ReadAscii(4);
@@ -278,6 +359,8 @@ namespace BIS.ALB
             return res.ToString();
         }
 
+        /// <summary>Performs the extract object data operation.</summary>
+        /// <returns>The resulting value.</returns>
         public string ExtractObjectData()
         {
             var treeEntry = entries.FirstOrDefault(e => tags[e.TagID].Equals("tree"));
@@ -300,6 +383,9 @@ namespace BIS.ALB
             return sb.ToString();
         }
 
+        /// <summary>Performs the extract object data operation.</summary>
+        /// <param name="node">The node value.</param>
+        /// <param name="list">The list value.</param>
         public void ExtractObjectData(ObjectTreeNode node, LinkedList<ObjectTreeLeaf> list)
         {
             if (node.NodeType == 16)
@@ -320,6 +406,8 @@ namespace BIS.ALB
             }
         }
 
+        /// <summary>Converts this value to string.</summary>
+        /// <returns>The resulting value.</returns>
         public override string ToString()
         {
             return EntriesToString(entries);

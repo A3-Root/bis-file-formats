@@ -5,19 +5,29 @@ using System.Linq;
 
 namespace BIS.RTM
 {
+    /// <summary>Represents rtmb.</summary>
     public class RTMB
     {
         // version 3 - LZO compression used for compressed arrays
         // version 4 - animation metadata
 
+        /// <summary>Gets the version.</summary>
         public int Version { get; private set; }
+        /// <summary>Gets the reversed.</summary>
         public bool Reversed { get; private set; }
+        /// <summary>Gets the step.</summary>
         public Vector3P Step { get; private set; }
+        /// <summary>Gets the preload count.</summary>
         public int PreloadCount { get; private set; }
+        /// <summary>Gets the bone names.</summary>
         public string[] BoneNames { get; private set; }
+        /// <summary>Gets the meta data values.</summary>
         public string[] MetaDataValues { get; private set; }
+        /// <summary>Gets the anim key stones.</summary>
         public AnimKeyStone[] AnimKeyStones { get; private set; }
+        /// <summary>Gets the phase times.</summary>
         public float[] PhaseTimes { get; private set; }
+        /// <summary>Gets the phases.</summary>
         public TransformP[][] Phases { get; private set; }
 
         private void Read(BinaryReaderEx input)

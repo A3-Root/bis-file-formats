@@ -11,40 +11,69 @@ using System.Numerics;
 
 namespace BIS.WRP
 {
+    /// <summary>Represents oprw.</summary>
     public class OPRW : IReadObject, IWrp
     {
+        /// <summary>Gets the version.</summary>
         public int Version { get; private set; }
+        /// <summary>Gets the app id.</summary>
         public int AppID { get; private set; }
+        /// <summary>Gets the land range x.</summary>
         public int LandRangeX { get; private set; }
+        /// <summary>Gets the land range y.</summary>
         public int LandRangeY { get; private set; }
+        /// <summary>Gets the terrain range x.</summary>
         public int TerrainRangeX { get; private set; }
+        /// <summary>Gets the terrain range y.</summary>
         public int TerrainRangeY { get; private set; }
+        /// <summary>Gets the cell size.</summary>
         public float CellSize { get; private set; }
+        /// <summary>Gets the geography.</summary>
         public QuadTree<GeographyInfo> Geography { get; private set; }
+        /// <summary>Gets the sound map.</summary>
         public QuadTree<byte> SoundMap { get; private set; }
+        /// <summary>Gets the mountains.</summary>
         public Vector3P[] Mountains { get; private set; } //map peaks
+        /// <summary>Gets the materials.</summary>
         public QuadTree<ushort> Materials { get; private set; }
+        /// <summary>Gets the random.</summary>
         public byte[] Random { get; private set; } //short values
+        /// <summary>Gets the grass approx.</summary>
         public byte[] GrassApprox { get; private set; }
+        /// <summary>Gets the prim tex index.</summary>
         public byte[] PrimTexIndex { get; private set; } //coord to primary texture mapping
+        /// <summary>Gets the elevation.</summary>
         public float[] Elevation { get; private set; }
+        /// <summary>Gets the mat names.</summary>
         public string[] MatNames { get; private set; }
+        /// <summary>Gets the models.</summary>
         public string[] Models { get; private set; }
+        /// <summary>Gets the entity infos.</summary>
         public StaticEntityInfo[] EntityInfos { get; private set; }
+        /// <summary>Gets the object offsets.</summary>
         public QuadTree<int> ObjectOffsets { get; private set; }
+        /// <summary>Gets the map object offsets.</summary>
         public QuadTree<int> MapObjectOffsets { get; private set; }
+        /// <summary>Gets the persistent.</summary>
         public byte[] Persistent { get; private set; }
+        /// <summary>Gets the max object id.</summary>
         public int MaxObjectId { get; private set; }
+        /// <summary>Gets the roadnet.</summary>
         public RoadLink[][] Roadnet { get; private set; }
+        /// <summary>Gets the objects.</summary>
         public Object[] Objects { get; private set; }
+        /// <summary>Gets the map infos.</summary>
         public byte[] MapInfos { get; private set; }
 
         IReadOnlyList<ushort> IWrp.MaterialIndex => Materials;
+        /// <summary>Initializes a new OPRW instance.</summary>
         public OPRW()
         {
 
         }
 
+        /// <summary>Initializes a new OPRW instance.</summary>
+        /// <param name="s">The s value.</param>
         public OPRW(Stream s)
         {
             var input = new BinaryReaderEx(s);
@@ -75,6 +104,8 @@ namespace BIS.WRP
         }
 
         //minimal version 10
+        /// <summary>Performs the read operation.</summary>
+        /// <param name="input">The source stream or value.</param>
         public void Read(BinaryReaderEx input)
         {
             var fileSig = input.ReadAscii(4);
@@ -175,6 +206,8 @@ namespace BIS.WRP
             MapInfos = input.ReadBytes((int)(input.BaseStream.Length - input.BaseStream.Position));
         }
 
+        /// <summary>Converts this value to editable wrp.</summary>
+        /// <returns>The resulting value.</returns>
         public EditableWrp ToEditableWrp()
         {
             return new EditableWrp()

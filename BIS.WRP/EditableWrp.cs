@@ -7,23 +7,31 @@ using BIS.Core.Streams;
 
 namespace BIS.WRP
 {
+    /// <summary>Represents editable wrp.</summary>
     public class EditableWrp : IReadWriteObject, IWrp// aka 8WVR
     {
+        /// <summary>Initializes a new EditableWrp instance.</summary>
         public EditableWrp()
         {
 
         }
 
+        /// <summary>Initializes a new EditableWrp instance.</summary>
+        /// <param name="s">The s value.</param>
         public EditableWrp(Stream s)
             : this(new BinaryReaderEx(s))
         {
         }
 
+        /// <summary>Initializes a new EditableWrp instance.</summary>
+        /// <param name="input">The source stream or value.</param>
         public EditableWrp(BinaryReaderEx input)
         {
             Read(input);
         }
 
+        /// <summary>Performs the read operation.</summary>
+        /// <param name="input">The source stream or value.</param>
         public void Read(BinaryReaderEx input)
         {
             if (input.ReadAscii(4) != "8WVR")
@@ -65,6 +73,8 @@ namespace BIS.WRP
             }
         }
 
+        /// <summary>Performs the write operation.</summary>
+        /// <param name="output">The destination stream or writer.</param>
         public void Write(BinaryWriterEx output)
         {
             output.WriteAscii("8WVR", 4);
@@ -91,18 +101,29 @@ namespace BIS.WRP
         }
 
 
+        /// <summary>Gets or sets the land range x.</summary>
         public int LandRangeX { get; set; }
+        /// <summary>Gets or sets the land range y.</summary>
         public int LandRangeY { get; set; }
+        /// <summary>Gets or sets the terrain range x.</summary>
         public int TerrainRangeX { get; set; }
+        /// <summary>Gets or sets the terrain range y.</summary>
         public int TerrainRangeY { get; set; }
+        /// <summary>Gets or sets the cell size.</summary>
         public float CellSize { get; set; }
+        /// <summary>Gets or sets the elevation.</summary>
         public float[] Elevation { get; set; }
+        /// <summary>Gets or sets the material index.</summary>
         public ushort[] MaterialIndex { get; set; }
+        /// <summary>Gets or sets the mat names.</summary>
         public string[] MatNames { get; set; }
+        /// <summary>Gets or sets the objects.</summary>
         public List<EditableWrpObject> Objects { get; set; } = new List<EditableWrpObject>();
 
         IReadOnlyList<ushort> IWrp.MaterialIndex => MaterialIndex;
 
+        /// <summary>Gets non dummy objects.</summary>
+        /// <returns>The resulting values.</returns>
         public IEnumerable<EditableWrpObject> GetNonDummyObjects() => Objects.TakeWhile(o => !string.IsNullOrEmpty(o.Model));
     }
 }

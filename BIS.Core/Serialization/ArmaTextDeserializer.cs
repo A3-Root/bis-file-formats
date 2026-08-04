@@ -23,12 +23,19 @@ namespace BIS.Core.Serialization
             return ReadArray(new StringReader(str));
         }
 
+        /// <summary>Parses a simple array and converts its numeric elements to the requested unmanaged type.</summary>
+        /// <typeparam name="T">The t type.</typeparam>
+        /// <param name="str">The str value.</param>
+        /// <returns>The resulting values.</returns>
         public static T[] ParseNumberArray<T>(string str)
             where T : unmanaged
         {
             return ParseSimpleArray(str).Cast<double?>().Select(n => (T)Convert.ChangeType(n, typeof(T))).ToArray();
         }
 
+        /// <summary>Performs the parse double operation.</summary>
+        /// <param name="str">The str value.</param>
+        /// <returns>The resulting value.</returns>
         public static double? ParseDouble(string str)
         {
             if (string.IsNullOrEmpty(str) || IsNullToken(str))
@@ -38,6 +45,9 @@ namespace BIS.Core.Serialization
             return double.Parse(str.Trim(), CultureInfo.InvariantCulture);
         }
 
+        /// <summary>Performs the parse string operation.</summary>
+        /// <param name="str">The str value.</param>
+        /// <returns>The resulting value.</returns>
         public static string ParseString(string str)
         {
             if (IsNullToken(str))

@@ -5,17 +5,24 @@ using BIS.Core.Streams;
 
 namespace BIS.Core.Math
 {
+    /// <summary>Represents transform p.</summary>
     public class TransformP
     {
         private readonly QuaternionP quaternion;
         private readonly Vector3P vector;
 
+        /// <summary>Initializes a new TransformP instance.</summary>
+        /// <param name="quaternion">The quaternion value.</param>
+        /// <param name="vector">The vector value.</param>
         public TransformP(QuaternionP quaternion, Vector3P vector)
         {
             this.quaternion = quaternion;
             this.vector = vector;
         }
 
+        /// <summary>Performs the read operation.</summary>
+        /// <param name="input">The source stream or value.</param>
+        /// <returns>The resulting value.</returns>
         public static TransformP Read(BinaryReaderEx input)
         {
             var quaternion = QuaternionP.ReadCompressed(input);

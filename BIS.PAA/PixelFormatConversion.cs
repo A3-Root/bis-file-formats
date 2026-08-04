@@ -4,6 +4,7 @@ using System.Runtime.CompilerServices;
 
 namespace BIS.PAA
 {
+    /// <summary>Represents pixel format conversion.</summary>
     public static class PixelFormatConversion
     {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -15,6 +16,9 @@ namespace BIS.PAA
             img[offset + 3] = a;
         }
 
+        /// <summary>Performs the argb16 to argb32 operation.</summary>
+        /// <param name="src">The src value.</param>
+        /// <returns>The resulting values.</returns>
         public static byte[] ARGB16ToARGB32(byte[] src)
         {
             var dst = new byte[src.Length * 2];
@@ -38,6 +42,9 @@ namespace BIS.PAA
             return dst;
         }
 
+        /// <summary>Performs the argb1555 to argb32 operation.</summary>
+        /// <param name="src">The src value.</param>
+        /// <returns>The resulting values.</returns>
         public static byte[] ARGB1555ToARGB32(byte[] src)
         {
             var dst = new byte[src.Length * 2];
@@ -60,6 +67,9 @@ namespace BIS.PAA
             return dst;
         }
 
+        /// <summary>Performs the ai88 to argb32 operation.</summary>
+        /// <param name="src">The src value.</param>
+        /// <returns>The resulting values.</returns>
         public static byte[] AI88ToARGB32(byte[] src)
         {
             var dst = new byte[src.Length * 2];
@@ -75,6 +85,10 @@ namespace BIS.PAA
             return dst;
         }
 
+        /// <summary>Performs the p8 to argb32 operation.</summary>
+        /// <param name="src">The src value.</param>
+        /// <param name="palette">The palette value.</param>
+        /// <returns>The resulting values.</returns>
         public static byte[] P8ToARGB32(byte[] src, Palette palette)
         {
             var dst = new byte[src.Length * 4];

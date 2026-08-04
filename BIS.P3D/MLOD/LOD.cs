@@ -6,21 +6,36 @@ using System.Linq;
 
 namespace BIS.P3D.MLOD
 {
+    /// <summary>Represents p3 dm lod.</summary>
     public class P3DM_LOD
     {
         private int Flags { get; set; }
+        /// <summary>Gets the version.</summary>
         public int Version { get; private set; }
+        /// <summary>Gets the points.</summary>
         public Point[] Points { get; private set; }
+        /// <summary>Gets the normals.</summary>
         public Vector3P[] Normals { get; private set; }
+        /// <summary>Gets the faces.</summary>
         public Face[] Faces { get; private set; }
+        /// <summary>Gets the taggs.</summary>
         public LinkedList<Tagg> Taggs { get; private set; }
+        /// <summary>Gets the resolution.</summary>
         public float Resolution { get; private set; }
 
+        /// <summary>Initializes a new P3DM_LOD instance.</summary>
+        /// <param name="input">The source stream or value.</param>
         public P3DM_LOD(BinaryReaderEx input)
         {
             Read(input);
         }
 
+        /// <summary>Initializes a new P3DM_LOD instance.</summary>
+        /// <param name="resolution">The resolution value.</param>
+        /// <param name="points">The points value.</param>
+        /// <param name="normals">The normals value.</param>
+        /// <param name="faces">The faces value.</param>
+        /// <param name="taggs">The taggs value.</param>
         public P3DM_LOD(float resolution, Point[] points, Vector3P[] normals, Face[] faces, IEnumerable<Tagg> taggs)
         {
             Version = 0x100;
@@ -31,6 +46,8 @@ namespace BIS.P3D.MLOD
             Resolution = resolution;
         }
 
+        /// <summary>Performs the read operation.</summary>
+        /// <param name="input">The source stream or value.</param>
         public void Read(BinaryReaderEx input)
         {
             if (input.ReadAscii(4) != "P3DM")
@@ -77,6 +94,8 @@ namespace BIS.P3D.MLOD
             Resolution = input.ReadSingle();
         }
 
+        /// <summary>Performs the write operation.</summary>
+        /// <param name="output">The destination stream or writer.</param>
         public void Write(BinaryWriterEx output)
         {
             var nPoints = Points.Length;

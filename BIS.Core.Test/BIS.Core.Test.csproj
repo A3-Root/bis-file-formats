@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
   </PropertyGroup>
@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\BIS.Core\BIS.Core.csproj" />
+    <ProjectReference Include="..\BIS.PAA.Encoder\BIS.PAA.Encoder.csproj" />
   </ItemGroup>
 
 </Project>

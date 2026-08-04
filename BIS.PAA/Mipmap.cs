@@ -3,6 +3,7 @@ using System;
 
 namespace BIS.PAA
 {
+    /// <summary>Represents mipmap.</summary>
     public class Mipmap
     {
         private const ushort MAGIC_LZW_W = 1234;
@@ -10,13 +11,22 @@ namespace BIS.PAA
 
         private bool hasMagicLZW;
 
+        /// <summary>Gets the offset.</summary>
         public int Offset { get; }
+        /// <summary>Gets the data offset.</summary>
         public int DataOffset { get; }
+        /// <summary>Gets the is lzo compressed.</summary>
         public bool IsLZOCompressed { get; }
+        /// <summary>Gets the width.</summary>
         public ushort Width { get; }
+        /// <summary>Gets the height.</summary>
         public ushort Height { get; }
+        /// <summary>Gets the data size.</summary>
         public uint DataSize { get; }
 
+        /// <summary>Initializes a new Mipmap instance.</summary>
+        /// <param name="input">The source stream or value.</param>
+        /// <param name="offset">The offset value.</param>
         public Mipmap(BinaryReaderEx input, int offset)
         {
             Offset = offset;
@@ -44,6 +54,10 @@ namespace BIS.PAA
             input.Position += DataSize; //skip data
         }
 
+        /// <summary>Gets raw pixel data.</summary>
+        /// <param name="input">The source stream or value.</param>
+        /// <param name="type">The type value.</param>
+        /// <returns>The resulting values.</returns>
         public byte[] GetRawPixelData(BinaryReaderEx input, PAAType type)
         {
             input.Position = DataOffset;

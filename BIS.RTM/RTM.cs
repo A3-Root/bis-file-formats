@@ -8,15 +8,24 @@ using BIS.Core.Math;
 
 namespace BIS.RTM
 {
+    /// <summary>Represents rtm.</summary>
     public class RTM
     {
+        /// <summary>Gets the displacement.</summary>
         public Vector3P Displacement { get; private set; }
+        /// <summary>Gets the bone names.</summary>
         public string[] BoneNames { get; private set; }
+        /// <summary>Gets the frame times.</summary>
         public float[] FrameTimes { get; private set; }
+        /// <summary>Gets the frame transforms.</summary>
         public Matrix4P[,] FrameTransforms { get; private set; }
 
+        /// <summary>Initializes a new RTM instance.</summary>
+        /// <param name="fileName">The file path.</param>
         public RTM(string fileName) : this(File.OpenRead(fileName)) { }
 
+        /// <summary>Initializes a new RTM instance.</summary>
+        /// <param name="stream">The source stream or value.</param>
         public RTM(Stream stream)
         {
             var input = new BinaryReaderEx(stream);
@@ -81,6 +90,8 @@ namespace BIS.RTM
             }
         }
 
+        /// <summary>Writes to file to the underlying data.</summary>
+        /// <param name="file">The file value.</param>
         public void WriteToFile(string file)
         {
             var output = new BinaryWriterEx(File.OpenWrite(file));
