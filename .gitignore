@@ -286,3 +286,11 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
+
+# AI agent files
+CLAUDE.md
+CLAUDE.md.bak
+AGENTS.md
+.claude/
+.codex/
+.agents/
